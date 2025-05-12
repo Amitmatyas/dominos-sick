@@ -35,7 +35,7 @@
 
         .logo-image {
             display: block; /* כדי לאפשר מרכוז עם margin: auto */
-            width: 80px; /* גודל הלוגו */
+            width: 80px; /* גודל הלוגo */
             height: 80px; /* גודל הלוגו */
             margin: 0 auto 20px auto; /* מרכוז והוספת רווח תחתון */
             object-fit: contain; /* ודא שהתמונה כולה גלויה ללא חיתוך */
@@ -176,7 +176,7 @@
         }
 
          #cart-items li .item-price-total {
-            order: 3; /* Display after item name */
+             order: 3; /* Display after item name */
              color: #e31837; /* Red for total item price */
              font-weight: bold;
              margin-left: 10px; /* Space after price before controls in RTL */
@@ -240,16 +240,48 @@
             margin-top: 15px;
         }
 
-        /* Styling for the email input section */
-        .email-section {
+        /* Styling for the gift delivery method section */
+        .delivery-method-section {
             margin-top: 20px;
-            margin-bottom: 20px;
             padding-top: 15px;
             border-top: 1px solid #eee;
             text-align: right;
         }
 
-        .email-section label {
+        .delivery-method-section label {
+            display: block;
+            font-weight: bold;
+            color: #016491;
+            margin-bottom: 8px;
+            text-align: center; /* Center the label */
+        }
+
+        .delivery-options {
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* Space between radio options */
+            margin-bottom: 15px;
+        }
+
+        .delivery-option {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .delivery-option input[type="radio"] {
+             margin-left: 5px; /* Space between radio button and text in RTL */
+        }
+
+
+        /* Styling for the email input section */
+        .email-input-container {
+            margin-top: 10px; /* Space above email input when visible */
+            text-align: right;
+        }
+
+
+        .email-input-container label {
             display: block; /* Label on its own line */
             font-weight: bold;
             color: #016491;
@@ -257,7 +289,7 @@
             text-align: center; /* Center the label */
         }
 
-        .email-section input[type="email"] {
+        .email-input-container input[type="email"] {
             width: calc(100% - 22px); /* Full width minus padding and border */
             padding: 10px;
             border: 1px solid #ccc;
@@ -269,7 +301,7 @@
             margin: 0 auto; /* Center the input field */
         }
 
-        .email-section input[type="email"]:focus {
+        .email-input-container input[type="email"]:focus {
             outline: none;
             border-color: #016491; /* Highlight on focus */
             box-shadow: 0 0 5px rgba(1, 100, 145, 0.3);
@@ -360,14 +392,28 @@
             <ul id="cart-items">
                 </ul>
 
-            <div class="email-section">
-                <label for="recipient-email">כתובת דוא״ל לשליחת המתנה:</label>
-                <input type="email" id="recipient-email" placeholder="הכנס כתובת דוא״ל" required>
-            </div>
+            <div class="delivery-method-section">
+                 <label>כיצד לשלוח את המתנה?</label>
+                 <div class="delivery-options">
+                     <label class="delivery-option">
+                         <input type="radio" name="delivery-method" value="email" checked>
+                         שליחה לדוא״ל
+                     </label>
+                     <label class="delivery-option">
+                         <input type="radio" name="delivery-method" value="link">
+                         יצירת קישור
+                     </label>
+                 </div>
+                 <div id="email-input-container" class="email-input-container">
+                     <label for="recipient-email">כתובת דוא״ל לשליחת המתנה:</label>
+                     <input type="email" id="recipient-email" placeholder="הכנס כתובת דוא״ל" required>
+                 </div>
+             </div>
+
              <p id="cart-total">סה״כ: 0.00 ש״ח</p>
-            <div class="buttons-container">
-                <button class="btn btn-pay" id="payButton" disabled>תשלום</button>
-            </div>
+             <div class="buttons-container">
+                 <button class="btn btn-pay" id="payButton" disabled>תשלום</button>
+             </div>
         </div>
     </div>
 
@@ -378,9 +424,28 @@
         const cartItemsList = document.getElementById('cart-items');
         const cartTotalParagraph = document.getElementById('cart-total');
         const payButton = document.getElementById('payButton');
-        const recipientEmailInput = document.getElementById('recipient-email'); // Get the email input
+        const recipientEmailInput = document.getElementById('recipient-email');
+        const emailInputContainer = document.getElementById('email-input-container');
+        const deliveryMethodRadios = document.querySelectorAll('input[name="delivery-method"]');
 
         let cart = []; // מערך לייצוג סל הקניות. כל פריט מכיל שם, מחיר, וכמות.
+
+        // פונקציה לעדכון מצב כפתור התשלום
+        function updatePayButtonState() {
+            const selectedDeliveryMethod = document.querySelector('input[name="delivery-method"]:checked').value;
+            const isCartNotEmpty = cart.length > 0;
+            let isEmailValid = true; // Assume valid if not using email
+
+            if (selectedDeliveryMethod === 'email') {
+                 // Basic check if email input is required and has a value (more robust validation would be needed)
+                 // The 'required' attribute handles basic emptiness, checkValidity handles format
+                 isEmailValid = recipientEmailInput.checkValidity();
+             }
+
+             // Button is enabled if cart is not empty AND (delivery is link OR (delivery is email AND email is valid))
+            payButton.disabled = !isCartNotEmpty || (selectedDeliveryMethod === 'email' && !isEmailValid);
+        }
+
 
         // פונקציה לעדכון תצוגת סל הקניות
         function updateCartDisplay() {
@@ -389,16 +454,17 @@
 
             if (cart.length === 0) {
                 cartSection.classList.add('hidden'); // הסתרת הסל אם הוא ריק
-                payButton.disabled = true; // נטרול כפתור תשלום אם הסל ריק
                 cartTotalParagraph.textContent = 'סה״כ: 0.00 ש״ח'; // איפוס סכום כולל
-                recipientEmailInput.required = false; // Email not required if cart is empty
+                // No need to set email required here, updatePayButtonState handles it
+                updatePayButtonState(); // Update pay button state when cart is empty
                 return; // יציאה מהפונקציה אם אין פריטים
             }
 
             // הצגת הסל אם יש פריטים
             cartSection.classList.remove('hidden');
-            payButton.disabled = false; // הפעלת כפתור תשלום
-            recipientEmailInput.required = true; // Email is required if cart has items
+            // No need to enable pay button here, updatePayButtonState handles it
+            // No need to set email required here, updatePayButtonState handles it
+             updatePayButtonState(); // Update pay button state when cart is not empty
 
 
             // יצירת רשימת פריטים מעודכנת
@@ -424,6 +490,20 @@
             cartTotalParagraph.textContent = `סה״כ: ${total.toFixed(2)} ש״ח`;
         }
 
+         // Function to handle delivery method change
+         function handleDeliveryMethodChange() {
+             const selectedMethod = document.querySelector('input[name="delivery-method"]:checked').value;
+             if (selectedMethod === 'email') {
+                 emailInputContainer.classList.remove('hidden');
+                 recipientEmailInput.required = true; // Make email required
+             } else {
+                 emailInputContainer.classList.add('hidden');
+                 recipientEmailInput.required = false; // Make email not required
+             }
+             updatePayButtonState(); // Update pay button state based on the new method
+         }
+
+
         // Event delegation for cart item controls (quantity and remove)
         cartItemsList.addEventListener('click', (event) => {
             const target = event.target;
@@ -441,8 +521,8 @@
             if (target.classList.contains('decrease-quantity')) {
                 const index = target.dataset.index;
                  if (cart[index] && cart[index].quantity > 1) {
-                    cart[index].quantity--;
-                    updateCartDisplay();
+                     cart[index].quantity--;
+                     updateCartDisplay();
                  }
             }
 
@@ -451,8 +531,8 @@
                  const index = target.dataset.index;
                  // Use confirm to ask user before removing
                  if (confirm(`האם אתה בטוח שברצונך להסיר את "${cart[index].name}" מהסל?`)) {
-                     cart.splice(index, 1); // Remove item from array
-                     updateCartDisplay(); // Update display
+                      cart.splice(index, 1); // Remove item from array
+                      updateCartDisplay(); // Update display
                  }
             }
         });
@@ -498,28 +578,51 @@
             }
         });
 
-        // אירוע לחיצה על כפתור "תשלום"
-        payButton.addEventListener('click', () => {
-            // Check if email is entered and valid (basic check with 'required' in HTML) and cart is not empty
-            if (cart.length > 0 && recipientEmailInput.checkValidity()) {
-                 const email = recipientEmailInput.value;
-                 // Here you would typically send the cart data and email to a server
-                 console.log("Initiating payment for cart:", cart);
-                 console.log("Recipient Email:", email);
+        // Event listener for email input to update pay button state
+        recipientEmailInput.addEventListener('input', updatePayButtonState);
 
-                alert("לא ניתן לשלם, אנא נסו שנית מאוחר יותר"); // Keep the placeholder alert for now
-                 // In a real application, this would initiate a payment process
-            } else if (cart.length === 0) {
-                 alert('סל הקניות ריק.');
-             } else {
-                 // This part should ideally be handled by HTML5 form validation if input is in a form
-                 alert('אנא הזן כתובת דוא״ל חוקית לשליחת המתנה.');
-             }
+        // Event listeners for delivery method radio buttons
+        deliveryMethodRadios.forEach(radio => {
+            radio.addEventListener('change', handleDeliveryMethodChange);
         });
 
-        // קריאה ראשונית לעדכון תצוגת הסל (כדי להציג "סה"כ: 0.00 ש"ח" ולנטרל כפתור תשלום)
-        updateCartDisplay();
 
+        // אירוע לחיצה על כפתור "תשלום"
+        payButton.addEventListener('click', () => {
+             const selectedDeliveryMethod = document.querySelector('input[name="delivery-method"]:checked').value;
+             const email = recipientEmailInput.value;
+
+             if (cart.length === 0) {
+                 alert('סל הקניות ריק.');
+                 return;
+             }
+
+             if (selectedDeliveryMethod === 'email') {
+                 if (!recipientEmailInput.checkValidity()) {
+                     alert('אנא הזן כתובת דוא״ל חוקית לשליחת המתנה.');
+                     return; // Stop if email is not valid
+                 }
+                 console.log("Initiating payment for cart (Email Delivery):", cart);
+                 console.log("Recipient Email:", email);
+                 alert("לא ניתן לשלם כעת, אנא נסו שנית מאוחר יותר"); // Placeholder alert for email
+                 // In a real application, send cart and email for processing
+             } else if (selectedDeliveryMethod === 'link') {
+                 console.log("Initiating payment for cart (Link Delivery):", cart);
+                 // In a real application, send cart for processing and generate a link
+                 alert("לא ניתן לשלם כעת, אנא נסו שנית מאוחר יותר"); // Placeholder alert for link
+                 // After successful payment, you would typically generate and display the link to the user
+             } else {
+                  // This case should ideally not happen if radio buttons are set up correctly
+                 alert('אנא בחר שיטת שליחה למתנה.');
+             }
+             // In a real scenario, after successful payment and delivery method handling,
+             // you might clear the cart, redirect, or show a success message.
+             // For this example, we just use alerts/logs.
+        });
+
+        // קריאה ראשונית לעדכון תצוגת הסל ולמצב כפתור התשלום
+        updateCartDisplay();
+        handleDeliveryMethodChange(); // Initialize the correct state for email input and button
     </script>
 
 </body>
