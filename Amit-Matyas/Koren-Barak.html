@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ברוכים הבאים</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0; /* צבע רקע כללי */
+            margin: 0;
+            direction: rtl; /* כיוון טקסט מימין לשמאל */
+            text-align: right; /* יישור טקסט לימין - ישפיע על הטקסט הרגיל */
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            min-height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            /* רקע שקוף למעבר חלק - אפשר לשנות ללבן אם רוצים רקע מלא */
+             background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .box {
+            background-color: #e0e0e0; /* צבע רקע מלבן - אפור */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* צל */
+            /* text-align: center; - הסרנו מכאן כדי לאפשר יישור פרטני בתוך המלבן */
+            color: #016491; /* צבע טקסט במלבן */
+            max-width: 400px;
+            width: 90%;
+            display: flex; /* שימוש בפלקסבוקס בתוך התיבה */
+            flex-direction: column; /* סידור האלמנטים בעמודה */
+            align-items: center; /* מרכוז אופקי של אלמנטים הילדים */
+        }
+
+        .logo-image {
+            display: block; /* כדי לאפשר מרכוז עם margin: auto */
+            width: 80px; /* גודל הלוגו */
+            height: 80px; /* גודל הלוגו */
+            margin: 0 auto 20px auto; /* מרכוז והוספת רווח תחתון */
+            flex-shrink: 0; /* מונע התכווצות */
+            object-fit: contain; /* ודא שהתמונה כולה גלויה ללא חיתוך */
+            /* אם התמונה המקורית עם שקיפות, הרקע של התיבה האפורה ייראה מאחור */
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column; /* סידור הטקסט והקלט בעמודה */
+            align-items: center; /* מרכוז אופקי בתוך הקבוצה */
+            width: 100%; /* הקבוצה תתפרס על רוחב התיבה */
+        }
+
+        .input-group p {
+            margin-top: 0;
+            margin-bottom: 10px; /* רווח מתחת לטקסט "אנא הזן" */
+            font-size: 1.1em;
+            text-align: center; /* מרכוז הטקסט עצמו */
+            width: 100%; /* ודא שהפסקה תופסת רוחב מלא למרכוז יעיל */
+        }
+
+        #nameInput {
+            padding: 12px 15px; /* הגדלת ריפוד פנימי */
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            width: calc(100% - 30px); /* התאמת רוחב לפי הריפוד */
+            max-width: 300px; /* רוחב מקסימלי לשדה הקלט */
+            text-align: right; /* יישור טקסט מימין בשדה קלט */
+            box-sizing: border-box; /* ודא שהרוחב כולל את הריפוד והגבול */
+            font-size: 1em; /* גודל גופן */
+            transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* אנימציה למעבר */
+        }
+
+        #nameInput:focus {
+            outline: none; /* הסרת קו המתאר ברירת המחדל בדפדפנים מסוימים */
+            border-color: #016491; /* צבע גבול בעת פוקוס */
+            box-shadow: 0 0 8px rgba(1, 100, 145, 0.3); /* צל עדין בעת פוקוס */
+        }
+
+
+        #state2 p {
+            margin: 10px 0;
+            font-size: 1.1em;
+            text-align: center; /* מרכוז טקסט במצב 2 */
+             width: 100%; /* ודא שהפסקה תופסת רוחב מלא למרכוז יעיל */
+        }
+
+        #state2 #welcomeMessage {
+             font-weight: bold;
+             color: #e31837; /* צבע עבור הודעת ברוך הבא */
+        }
+
+
+        .image-placeholder {
+            width: 80%; /* רוחב תמונה גדולה */
+            max-width: 600px; /* רוחב מקסימלי */
+            aspect-ratio: 1 / 1; /* שמירה על יחס גובה-רוחב 1:1 */
+            background-color: #cccccc; /* צבע לפלייסהולדר של התמונה (לא ייראה אם התמונה מכסה הכל) */
+            margin: 20px auto;
+            cursor: pointer; /* מראה שהאלמנט לחיץ */
+            /* כאן תוכל להוסיף תמונת רקע או תוכן אחר לתמונה הגדולה */
+            background-image: url('https://iili.io/38lWbUJ.md.jpg'); /* כתובת התמונה */
+            background-size: cover; /* שימוש ב-cover כדי למלא את השטח ביחס 1:1 */
+            background-position: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* צל */
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 20px; /* מיקום למעלה משמאל עבור RTL */
+            background-color: #e31837; /* צבע רקע הודעה */
+            color: #ffffff; /* צבע טקסט הודעה */
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 1000; /* ודא שההודעה מעל תוכן אחר */
+            display: none; /* מוסתר בהתחלה */
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="state1" class="container">
+        <div class="box">
+            <img class="logo-image" src="https://iili.io/38lEvv2.png" alt="Logo">
+
+            <div class="input-group"> <p>אנא הזן את שמך:</p>
+                <input type="text" id="nameInput" placeholder="הזן את שמך כאן">
+            </div>
+             </div>
+    </div>
+
+    <div id="state2" class="container hidden">
+        <div class="box">
+             <img class="logo-image" src="https://iili.io/38lEvv2.png" alt="Logo">
+            <p id="welcomeMessage"></p>
+            <p>מקווים שתרגיש טוב, החלמה מהירה</p>
+        </div>
+    </div>
+
+    <div id="state3" class="container hidden">
+        <div id="largeImagePlaceholder" class="image-placeholder"></div>
+    </div>
+
+    <div id="notification" class="notification">
+        הטקסט הועתק
+    </div>
+
+    <script>
+        const state1 = document.getElementById('state1');
+        const state2 = document.getElementById('state2');
+        const state3 = document.getElementById('state3');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const largeImagePlaceholder = document.getElementById('largeImagePlaceholder');
+        const notification = document.getElementById('notification');
+        // אין צורך להתייחס ל-nameInput ב-JS לוגיקה של מעבר
+
+        // השם הקבוע שישמש בהודעת ברוך הבא
+        const fixedName = 'קורן ברק';
+
+        // הפונקציה המטפלת במעברים בין המצבים
+        function startSequence() {
+            // מעבר למצב 2 לאחר 1.5 שניות
+            setTimeout(() => {
+                state1.classList.add('hidden');
+                state2.classList.remove('hidden');
+                // הצגת השם הקבוע בהודעת ברוך הבא
+                welcomeMessage.textContent = `ברוך הבא ${fixedName}`;
+
+                // מעבר למצב 3 לאחר 3 שניות
+                setTimeout(() => {
+                    state2.classList.add('hidden');
+                    state3.classList.remove('hidden');
+                }, 3000); // 3 שניות
+            }, 1500); // 1.5 שניות
+        }
+
+        // הפעלת הרצף כאשר הדף נטען במלואו
+        window.addEventListener('DOMContentLoaded', startSequence);
+
+
+        // אירוע לחיצה על התמונה הגדולה
+        largeImagePlaceholder.addEventListener('click', () => {
+            const textToCopy = '719087265';
+
+            // העתקת הטקסט ללוח הגזירים
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                // הצגת הודעת העתקה
+                notification.style.display = 'block';
+
+                // הסתרת הודעת העתקה לאחר 2 שניות
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 2000); // 2 שניות
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+                // אפשר להציג הודעת שגיאה למשתמש אם ההעתקה נכשלה
+                alert('העתקת הטקסט נכשלה');
+            });
+        });
+
+    </script>
+
+</body>
+</html>
