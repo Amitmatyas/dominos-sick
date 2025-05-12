@@ -7,10 +7,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@900&display=swap" rel="stylesheet">
-<link rel="icon" href="https://iili.io/38lEvv2.png" type="image/png">
+    <link rel="icon" href="https://iili.io/38lEvv2.png" type="image/png">
     <style>
         body {
-            font-family: Arial, sans-serif; /* גופן ברירת מחדל, Heebo ישמש לכותרת */
+            font-family: Arial, sans-serif; /* גופן ברירת מחדל, Heebo ישמש לכותרות */
             display: flex;
             justify-content: center;
             align-items: flex-start; /* יישור למעלה ולא למרכז כל המסך */
@@ -41,14 +41,28 @@
             object-fit: contain; /* ודא שהתמונה כולה גלויה ללא חיתוך */
         }
 
-        .main-text {
+        /* סטיילינג לכותרת הראשית */
+        .maintext {
             font-family: 'Heebo', sans-serif; /* שימוש בגופן Heebo */
             font-weight: 900; /* משקל Black עבור Heebo */
             font-size: 1.8em; /* הגדלת גודל הגופן */
-            color: #016491; /* צבע טקסט */
-            margin-bottom: 25px;
-            line-height: 1.4; /* רווח שורות למקרה של שתי שורות */
+            color: #016491; /* צבע טקסט כחול */
+            margin-bottom: 10px; /* רווח קטן מתחת לכותרת הראשית */
+            margin-top: 0; /* ודא שאין מרווח עליון כברירת מחדל */
+            text-align: center; /* מרכז את הטקסט */
         }
+
+        /* סטיילינג לכותרת המשנה */
+        .subtext {
+            font-family: Arial, sans-serif; /* או Heebo, תלוי בהעדפה */
+            font-weight: 650; /* משקל רגיל */
+            font-size: 1.5em; /* גודל מעט קטן יותר מהכותרת הראשית */
+            color: #016491; /* צבע אפור כהה לניגודיות */
+            margin-bottom: 25px; /* רווח תחתון לפני האופציות */
+            margin-top: 0; /* ודא שאין מרווח עליון כברירת מחדל */
+            text-align: center; /* מרכז את הטקסט */
+        }
+
 
         .options-list {
             margin-bottom: 25px;
@@ -80,23 +94,22 @@
         /* עיצוב האופציה הנבחרת */
         .option input[type="radio"]:checked + .option-content {
             font-weight: bold;
-             /* עיצוב גבול במקום לשנות את רקע כל האופציה כדי לשמור על הריווח */
-             border-bottom: 2px solid #016491;
-             padding-bottom: 5px; /* התאמת ריפוד בגלל הגבול התחתון */
+            /* עיצוב גבול במקום לשנות את רקע כל האופציה כדי לשמור על הריווח */
+            /* border-bottom: 2px solid #016491; */ /* Removed border bottom as it might interfere with layout */
+            /* padding-bottom: 5px; */ /* Adjusted padding due to border bottom */
         }
 
-         /* שינוי רקע האופציה בעת ריחוף ועבור הנבחרת */
+        /* שינוי רקע האופציה בעת ריחוף ועבור הנבחרת */
         .option:hover,
         .option input[type="radio"]:checked {
             background-color: #d5d5d5; /* צבע רקע מעט כהה יותר בריחוף או בחירה */
         }
 
-
         .option-content {
-             display: flex; /* שימוש בפלקסבוקס לסידור הטקסט והמחיר */
-             justify-content: space-between; /* פיזור הטקסט והמחיר לקצוות */
-             align-items: center; /* יישור פריטים במרכז אנכית */
-             width: 100%; /* ודא שהתוכן תופס את כל הרוחב */
+            display: flex; /* שימוש בפלקסבוקס לסידור הטקסט והמחיר */
+            justify-content: space-between; /* פיזור הטקסט והמחיר לקצוות */
+            align-items: center; /* יישור פריטים במרכז אנכית */
+            width: 100%; /* ודא שהתוכן תופס את כל הרוחב */
         }
 
         .option-text {
@@ -148,18 +161,18 @@
             font-size: 0.95em;
         }
 
-         #cart-items li:last-child {
-             margin-bottom: 0;
-         }
+        #cart-items li:last-child {
+            margin-bottom: 0;
+        }
 
         .item-name {
             font-weight: bold;
         }
 
         .item-price {
-             color: #e31837; /* צבע אדום למחיר בסל */
-             font-weight: bold;
-             margin-right: 10px;
+            color: #e31837; /* צבע אדום למחיר בסל */
+            font-weight: bold;
+            margin-right: 10px;
         }
 
         #cart-total {
@@ -169,7 +182,6 @@
             color: #016491;
             margin-top: 15px;
         }
-
 
         .buttons-container {
             display: flex;
@@ -196,11 +208,10 @@
             opacity: 0.9;
         }
 
-         .btn:disabled { /* עיצוב כפתור מנוטרל */
-             opacity: 0.6;
-             cursor: not-allowed;
-         }
-
+        .btn:disabled { /* עיצוב כפתור מנוטרל */
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
 
         .btn-add-to-cart {
             background-color: #ffffff; /* רקע לבן */
@@ -223,10 +234,8 @@
     <div class="container">
         <img class="logo-image" src="https://iili.io/38lEvv2.png" alt="Logo">
 
-        <p class="main-text">
-            מישהו חולה?<br>
-            הביאו לו מתנה קטנה ורגשו אותו
-        </p>
+        <p class="maintext">מישהו חולה?</p>
+        <p class="subtext">הביאו לו מתנה קטנה ורגשו אותו</p>
 
         <div class="options-list">
             <label class="option" data-name="30% הנחה" data-price="34.90">
@@ -237,34 +246,31 @@
             </label>
             <label class="option" data-name="פיצה חינם" data-price="72.90">
                 <input type="radio" name="gift-option" value="option2">
-                 <span class="option-content">
+                <span class="option-content">
                     <span class="option-text">2. פיצה חינם</span> <span class="option-price">72.90 ש״ח</span>
                 </span>
             </label>
             <label class="option" data-name="ארוחה (פיצה+נלווה+שתייה)" data-price="144.90">
                 <input type="radio" name="gift-option" value="option3">
-                 <span class="option-content">
+                <span class="option-content">
                     <span class="option-text">3. ארוחה (פיצה+נלווה+שתייה)</span> <span class="option-price">144.90 ש״ח</span>
                 </span>
             </label>
         </div>
 
         <div class="buttons-container">
-             <button class="btn btn-add-to-cart" id="addToCartButton">הוספה לסל</button>
+            <button class="btn btn-add-to-cart" id="addToCartButton">הוספה לסל</button>
         </div>
-
 
         <div id="cart-section" class="cart-section hidden">
             <h3>סל הקניות:</h3>
             <ul id="cart-items">
                 </ul>
             <p id="cart-total">סה״כ: 0.00 ש״ח</p>
-             <div class="buttons-container">
+            <div class="buttons-container">
                 <button class="btn btn-pay" id="payButton" disabled>תשלום</button>
             </div>
         </div>
-
-
     </div>
 
     <script>
@@ -285,7 +291,7 @@
             if (cart.length === 0) {
                 cartSection.classList.add('hidden'); // הסתרת הסל אם הוא ריק
                 payButton.disabled = true; // נטרול כפתור תשלום אם הסל ריק
-                 cartTotalParagraph.textContent = 'סה״כ: 0.00 ש״ח'; // איפוס סכום כולל
+                cartTotalParagraph.textContent = 'סה״כ: 0.00 ש״ח'; // איפוס סכום כולל
                 return; // יציאה מהפונקציה אם אין פריטים
             }
 
@@ -319,7 +325,6 @@
                 }
             });
 
-
             if (selectedOption) {
                 // קבלת הנתונים מהאופציה הנבחרת (מה-label שעוטף)
                 const optionLabel = selectedOption.closest('.option');
@@ -327,12 +332,11 @@
                 const itemPrice = parseFloat(optionLabel.dataset.price); // המרה למספר
 
                 // בדיקה אם הפריט כבר בסל לפי שם (מונע הוספה כפולה של אותו פריט)
-                 const existingItem = cart.find(item => item.name === itemName);
-                 if (existingItem) {
-                     alert('פריט זה כבר בסל. לא ניתן להוסיף אותו שוב.'); // או להגדיל כמות אם רוצים
-                     return;
-                 }
-
+                const existingItem = cart.find(item => item.name === itemName);
+                if (existingItem) {
+                    alert('פריט זה כבר בסל. לא ניתן להוסיף אותו שוב.'); // או להגדיל כמות אם רוצים
+                    return;
+                }
 
                 // הוספת הפריט לסל
                 cart.push({ name: itemName, price: itemPrice });
@@ -341,10 +345,10 @@
                 updateCartDisplay();
 
                 // אופציונלי: ניקוי הבחירה לאחר ההוספה
-                 // selectedOption.checked = false;
-                 // // יש צורך לעדכן את עיצוב האופציות באופן ידני אם מנקים את הבחירה
-                 // // הקוד הנוכחי מתבסס על פסאודו סלקטור :checked + sibling
-                 // // אם מנקים את הבחירה, העיצוב יתעדכן אוטומטית.
+                // selectedOption.checked = false;
+                // // יש צורך לעדכן את עיצוב האופציות באופן ידני אם מנקים את הבחירה
+                // // הקוד הנוכחי מתבסס על פסאודו סלקטור :checked + sibling
+                // // אם מנקים את הבחירה, העיצוב יתעדכן אוטומטית.
 
             } else {
                 alert('אנא בחר אופציה לפני ההוספה לסל.');
@@ -354,8 +358,8 @@
         // אירוע לחיצה על כפתור "תשלום"
         payButton.addEventListener('click', () => {
             if (cart.length > 0) {
-                 // הצגת התראה של הדפדפן
-                 alert("לא ניתן לשלם, אנא נסו שנית מאוחר יותר");
+                // הצגת התראה של הדפדפן
+                alert("לא ניתן לשלם, אנא נסו שנית מאוחר יותר");
             } else {
                 alert('סל הקניות ריק.'); // לא אמור לקרות אם הכפתור מנוטרל כשהסל ריק
             }
