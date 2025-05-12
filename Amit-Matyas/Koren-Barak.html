@@ -6,8 +6,12 @@
     <title>מתנה לחולה - דומינוס</title>
 <link rel="icon" href="https://iili.io/38lEvv2.png" type="image/png">
     <style>
+        /* ייבוא הפונטים מ-Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;900&display=swap');
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Heebo', sans-serif; /* שימוש בפונט Heebo כברירת מחדל */
+            font-weight: 400; /* ברירת מחדל למשקל Regular */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -28,7 +32,7 @@
             top: 0;
             left: 0;
             /* רקע שקוף למעבר חלק - אפשר לשנות ללבן אם רוצים רקע מלא */
-             background-color: rgba(255, 255, 255, 0.8);
+            background-color: rgba(255, 255, 255, 0.8);
         }
 
         .box {
@@ -68,6 +72,7 @@
             font-size: 1.1em;
             text-align: center; /* מרכוז הטקסט עצמו */
             width: 100%; /* ודא שהפסקה תופסת רוחב מלא למרכוז יעיל */
+            font-weight: 900; /* אנא הזן את שמך - Heebo Black */
         }
 
         #nameInput {
@@ -80,12 +85,14 @@
             box-sizing: border-box; /* ודא שהרוחב כולל את הריפוד והגבול */
             font-size: 1em; /* גודל גופן */
             transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* אנימציה למעבר */
+            font-weight: 400; /* שדה קלט - Heebo Regular */
         }
 
-        #nameInput:focus {
-            outline: none; /* הסרת קו המתאר ברירת המחדל בדפדפנים מסוימים */
-            border-color: #016491; /* צבע גבול בעת פוקוס */
-            box-shadow: 0 0 8px rgba(1, 100, 145, 0.3); /* צל עדין בעת פוקוס */
+         /* סטיילינג לטקסט הפלייס והולדר */
+        #nameInput::placeholder {
+            font-family: 'Heebo', sans-serif;
+            font-weight: 400; /* פלייס והולדר - Heebo Regular */
+            color: #888; /* צבע ברירת מחדל לפלייס והולדר */
         }
 
 
@@ -93,12 +100,13 @@
             margin: 10px 0;
             font-size: 1.1em;
             text-align: center; /* מרכוז טקסט במצב 2 */
-             width: 100%; /* ודא שהפסקה תופסת רוחב מלא למרכוז יעיל */
+            width: 100%; /* ודא שהפסקה תופסת רוחב מלא למרכוז יעיל */
+            font-weight: 400; /* שאר הטקסט במצב 2 - Heebo Regular */
         }
 
         #state2 #welcomeMessage {
-             font-weight: bold;
-             color: #e31837; /* צבע עבור הודעת ברוך הבא */
+            font-weight: 900; /* ברוך הבא - Heebo Black */
+            color: #e31837; /* צבע עבור הודעת ברוך הבא */
         }
 
 
@@ -119,8 +127,9 @@
 
         .notification {
             position: fixed;
-            top: 20px;
-            left: 20px; /* מיקום למעלה משמאל עבור RTL */
+            top: 20px; /* Position at the top, with a small offset */
+            left: 50%; /* Start from the middle horizontally */
+            transform: translateX(-50%); /* Shift left by half of its own width to center */
             background-color: #e31837; /* צבע רקע הודעה */
             color: #ffffff; /* צבע טקסט הודעה */
             padding: 10px 20px;
@@ -128,6 +137,9 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
             z-index: 1000; /* ודא שההודעה מעל תוכן אחר */
             display: none; /* מוסתר בהתחלה */
+            text-align: center; /* Center the text inside the notification */
+            font-family: 'Heebo', sans-serif; /* שימוש בפונט Heebo גם בהודעה */
+            font-weight: 400; /* Heebo Regular */
         }
 
         .hidden {
@@ -144,12 +156,12 @@
             <div class="input-group"> <p>אנא הזן את שמך:</p>
                 <input type="text" id="nameInput" placeholder="הזן את שמך כאן">
             </div>
-             </div>
+        </div>
     </div>
 
     <div id="state2" class="container hidden">
         <div class="box">
-             <img class="logo-image" src="https://iili.io/38lEvv2.png" alt="Logo">
+            <img class="logo-image" src="https://iili.io/38lEvv2.png" alt="Logo">
             <p id="welcomeMessage"></p>
             <p>מקווים שתרגיש טוב, החלמה מהירה</p>
         </div>
