@@ -55,14 +55,13 @@
         /* סטיילינג לכותרת המשנה */
         .subtext {
             font-family: Arial, sans-serif; /* או Heebo, תלוי בהעדפה */
-            font-weight: 650; /* משקל רגיל */
-            font-size: 1.5em; /* גודל מעט קטן יותר מהכותרת הראשית */
-            color: #016491; /* צבע אפור כהה לניגודיות */
+            font-weight: normal; /* משקל רגיל */
+            font-size: 1.1em; /* גודל מעט קטן יותר מהכותרת הראשית */
+            color: #333; /* צבע אפור כהה לניגודיות */
             margin-bottom: 25px; /* רווח תחתון לפני האופציות */
             margin-top: 0; /* ודא שאין מרווח עליון כברירת מחדל */
             text-align: center; /* מרכז את הטקסט */
         }
-
 
         .options-list {
             margin-bottom: 25px;
@@ -94,9 +93,6 @@
         /* עיצוב האופציה הנבחרת */
         .option input[type="radio"]:checked + .option-content {
             font-weight: bold;
-            /* עיצוב גבול במקום לשנות את רקע כל האופציה כדי לשמור על הריווח */
-            /* border-bottom: 2px solid #016491; */ /* Removed border bottom as it might interfere with layout */
-            /* padding-bottom: 5px; */ /* Adjusted padding due to border bottom */
         }
 
         /* שינוי רקע האופציה בעת ריחוף ועבור הנבחרת */
@@ -155,25 +151,86 @@
             margin-bottom: 8px;
             border-radius: 4px;
             display: flex;
-            justify-content: space-between;
+            justify-content: space-between; /* פיזור הפריטים לקצוות */
             align-items: center;
             color: #016491;
             font-size: 0.95em;
+            flex-wrap: wrap; /* Allow items to wrap on smaller screens */
         }
 
         #cart-items li:last-child {
             margin-bottom: 0;
         }
 
-        .item-name {
+        /* Updated layout for cart items */
+        #cart-items li .remove-btn { /* Specificity for remove button inside li */
+            order: 1; /* Display first (on the right in RTL flex) */
+            margin-left: 10px; /* Space after remove button in RTL */
+        }
+
+        #cart-items li .item-name {
+            order: 2; /* Display after remove button */
+            font-weight: bold;
+            flex-grow: 1; /* Take available space in the middle */
+             margin-left: 10px; /* Space after item name in RTL */
+        }
+
+         #cart-items li .item-price-total {
+            order: 3; /* Display after item name */
+             color: #e31837; /* Red for total item price */
+             font-weight: bold;
+             margin-left: 10px; /* Space after price before controls in RTL */
+             flex-shrink: 0; /* Prevent shrinking */
+         }
+
+
+        #cart-items li .item-controls {
+            order: 4; /* Display last (on the left in RTL flex) */
+            display: flex;
+            align-items: center;
+            flex-shrink: 0; /* Prevent shrinking */
+        }
+
+        .item-quantity {
+            margin: 0 5px; /* Space around the quantity number */
             font-weight: bold;
         }
 
-        .item-price {
-            color: #e31837; /* צבע אדום למחיר בסל */
-            font-weight: bold;
-            margin-right: 10px;
+        .quantity-btn, .remove-btn {
+            background-color: #016491;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 1em;
+            width: 25px; /* Fixed width for buttons */
+            height: 25px; /* Fixed height for buttons */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.2s ease;
+            padding: 0; /* Remove default padding */
+            line-height: 1; /* Improve vertical centering of text/icon */
         }
+
+        .quantity-btn:hover:not(:disabled), .remove-btn:hover:not(:disabled) {
+             background-color: #004f7a; /* Darker blue on hover */
+        }
+
+         .quantity-btn:disabled {
+             opacity: 0.5;
+             cursor: not-allowed;
+         }
+
+
+        .remove-btn {
+            background-color: #e31837; /* Red for remove button */
+        }
+
+        .remove-btn:hover:not(:disabled) {
+            background-color: #c21531; /* Darker red on hover */
+        }
+
 
         #cart-total {
             text-align: center;
@@ -182,6 +239,42 @@
             color: #016491;
             margin-top: 15px;
         }
+
+        /* Styling for the email input section */
+        .email-section {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            text-align: right;
+        }
+
+        .email-section label {
+            display: block; /* Label on its own line */
+            font-weight: bold;
+            color: #016491;
+            margin-bottom: 8px;
+            text-align: center; /* Center the label */
+        }
+
+        .email-section input[type="email"] {
+            width: calc(100% - 22px); /* Full width minus padding and border */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+            text-align: right; /* Align text to the right */
+            display: block; /* Make it a block element to take full width */
+            margin: 0 auto; /* Center the input field */
+        }
+
+        .email-section input[type="email"]:focus {
+            outline: none;
+            border-color: #016491; /* Highlight on focus */
+            box-shadow: 0 0 5px rgba(1, 100, 145, 0.3);
+        }
+
 
         .buttons-container {
             display: flex;
@@ -266,7 +359,12 @@
             <h3>סל הקניות:</h3>
             <ul id="cart-items">
                 </ul>
-            <p id="cart-total">סה״כ: 0.00 ש״ח</p>
+
+            <div class="email-section">
+                <label for="recipient-email">כתובת דוא״ל לשליחת המתנה:</label>
+                <input type="email" id="recipient-email" placeholder="הכנס כתובת דוא״ל" required>
+            </div>
+             <p id="cart-total">סה״כ: 0.00 ש״ח</p>
             <div class="buttons-container">
                 <button class="btn btn-pay" id="payButton" disabled>תשלום</button>
             </div>
@@ -280,8 +378,9 @@
         const cartItemsList = document.getElementById('cart-items');
         const cartTotalParagraph = document.getElementById('cart-total');
         const payButton = document.getElementById('payButton');
+        const recipientEmailInput = document.getElementById('recipient-email'); // Get the email input
 
-        let cart = []; // מערך לייצוג סל הקניות
+        let cart = []; // מערך לייצוג סל הקניות. כל פריט מכיל שם, מחיר, וכמות.
 
         // פונקציה לעדכון תצוגת סל הקניות
         function updateCartDisplay() {
@@ -292,33 +391,78 @@
                 cartSection.classList.add('hidden'); // הסתרת הסל אם הוא ריק
                 payButton.disabled = true; // נטרול כפתור תשלום אם הסל ריק
                 cartTotalParagraph.textContent = 'סה״כ: 0.00 ש״ח'; // איפוס סכום כולל
+                recipientEmailInput.required = false; // Email not required if cart is empty
                 return; // יציאה מהפונקציה אם אין פריטים
             }
 
             // הצגת הסל אם יש פריטים
             cartSection.classList.remove('hidden');
             payButton.disabled = false; // הפעלת כפתור תשלום
+            recipientEmailInput.required = true; // Email is required if cart has items
+
 
             // יצירת רשימת פריטים מעודכנת
-            cart.forEach(item => {
+            cart.forEach((item, index) => { // Added index for easy identification
                 const listItem = document.createElement('li');
-                // שימוש ב-toFixed(2) להצגת 2 ספרות אחרי הנקודה למחיר
-                listItem.innerHTML = `<span class="item-name">${item.name}</span> <span class="item-price">${item.price.toFixed(2)} ש״ח</span>`;
+                 // Use data-name and data-index to identify item for quantity/remove actions
+                 // The order in the HTML dictates the order in the flex container (RTL)
+                listItem.innerHTML = `
+                    <button class="remove-btn" data-index="${index}">X</button>
+                    <span class="item-name">${item.name}</span>
+                    <span class="item-price-total">${(item.price * item.quantity).toFixed(2)} ש״ח</span>
+                    <span class="item-controls">
+                        <button class="quantity-btn decrease-quantity" data-index="${index}" ${item.quantity === 1 ? 'disabled' : ''}>-</button>
+                        <span class="item-quantity">${item.quantity}</span>
+                        <button class="quantity-btn increase-quantity" data-index="${index}">+</button>
+                    </span>
+                `;
                 cartItemsList.appendChild(listItem);
-                total += item.price;
+                total += item.price * item.quantity;
             });
 
             // עדכון הסכום הכולל
             cartTotalParagraph.textContent = `סה״כ: ${total.toFixed(2)} ש״ח`;
         }
 
+        // Event delegation for cart item controls (quantity and remove)
+        cartItemsList.addEventListener('click', (event) => {
+            const target = event.target;
+
+            // Handle Quantity Increase
+            if (target.classList.contains('increase-quantity')) {
+                const index = target.dataset.index;
+                if (cart[index]) {
+                    cart[index].quantity++;
+                    updateCartDisplay();
+                }
+            }
+
+            // Handle Quantity Decrease
+            if (target.classList.contains('decrease-quantity')) {
+                const index = target.dataset.index;
+                 if (cart[index] && cart[index].quantity > 1) {
+                    cart[index].quantity--;
+                    updateCartDisplay();
+                 }
+            }
+
+            // Handle Remove Item
+            if (target.classList.contains('remove-btn')) {
+                 const index = target.dataset.index;
+                 // Use confirm to ask user before removing
+                 if (confirm(`האם אתה בטוח שברצונך להסיר את "${cart[index].name}" מהסל?`)) {
+                     cart.splice(index, 1); // Remove item from array
+                     updateCartDisplay(); // Update display
+                 }
+            }
+        });
+
+
         // אירוע לחיצה על כפתור "הוספה לסל"
         addToCartButton.addEventListener('click', () => {
-            // קבלת כל כפתורי הרדיו עם השם "gift-option"
             const radioButtons = document.querySelectorAll('input[name="gift-option"]');
             let selectedOption = null;
 
-            // מציאת כפתור הרדיו הנבחר
             radioButtons.forEach(radio => {
                 if (radio.checked) {
                     selectedOption = radio;
@@ -326,29 +470,28 @@
             });
 
             if (selectedOption) {
-                // קבלת הנתונים מהאופציה הנבחרת (מה-label שעוטף)
                 const optionLabel = selectedOption.closest('.option');
                 const itemName = optionLabel.dataset.name;
-                const itemPrice = parseFloat(optionLabel.dataset.price); // המרה למספר
+                const itemPrice = parseFloat(optionLabel.dataset.price);
 
-                // בדיקה אם הפריט כבר בסל לפי שם (מונע הוספה כפולה של אותו פריט)
+                // Check if the item is already in the cart by name
                 const existingItem = cart.find(item => item.name === itemName);
+
                 if (existingItem) {
-                    alert('פריט זה כבר בסל. לא ניתן להוסיף אותו שוב.'); // או להגדיל כמות אם רוצים
-                    return;
+                    // If exists, just increase the quantity
+                    existingItem.quantity++;
+                    // No alert here as requested
+                } else {
+                    // If not exists, add as a new item with quantity 1
+                    cart.push({ name: itemName, price: itemPrice, quantity: 1 });
+                    // No alert here as requested
                 }
 
-                // הוספת הפריט לסל
-                cart.push({ name: itemName, price: itemPrice });
-
-                // עדכון תצוגת הסל
+                // Update cart display
                 updateCartDisplay();
 
-                // אופציונלי: ניקוי הבחירה לאחר ההוספה
+                // Optional: Uncheck the radio button after adding
                 // selectedOption.checked = false;
-                // // יש צורך לעדכן את עיצוב האופציות באופן ידני אם מנקים את הבחירה
-                // // הקוד הנוכחי מתבסס על פסאודו סלקטור :checked + sibling
-                // // אם מנקים את הבחירה, העיצוב יתעדכן אוטומטית.
 
             } else {
                 alert('אנא בחר אופציה לפני ההוספה לסל.');
@@ -357,12 +500,21 @@
 
         // אירוע לחיצה על כפתור "תשלום"
         payButton.addEventListener('click', () => {
-            if (cart.length > 0) {
-                // הצגת התראה של הדפדפן
-                alert("לא ניתן לשלם, אנא נסו שנית מאוחר יותר");
-            } else {
-                alert('סל הקניות ריק.'); // לא אמור לקרות אם הכפתור מנוטרל כשהסל ריק
-            }
+            // Check if email is entered and valid (basic check with 'required' in HTML) and cart is not empty
+            if (cart.length > 0 && recipientEmailInput.checkValidity()) {
+                 const email = recipientEmailInput.value;
+                 // Here you would typically send the cart data and email to a server
+                 console.log("Initiating payment for cart:", cart);
+                 console.log("Recipient Email:", email);
+
+                alert("לא ניתן לשלם, אנא נסו שנית מאוחר יותר"); // Keep the placeholder alert for now
+                 // In a real application, this would initiate a payment process
+            } else if (cart.length === 0) {
+                 alert('סל הקניות ריק.');
+             } else {
+                 // This part should ideally be handled by HTML5 form validation if input is in a form
+                 alert('אנא הזן כתובת דוא״ל חוקית לשליחת המתנה.');
+             }
         });
 
         // קריאה ראשונית לעדכון תצוגת הסל (כדי להציג "סה"כ: 0.00 ש"ח" ולנטרל כפתור תשלום)
